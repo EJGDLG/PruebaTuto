@@ -42,7 +42,8 @@
     "server": "nodemon src/backend/main.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -65,6 +66,7 @@
   "devDependencies": {
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
+    "cypress": "^13.14.1",
     "nodemon": "^3.1.0"
   }
 }
