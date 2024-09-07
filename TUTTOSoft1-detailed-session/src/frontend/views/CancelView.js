@@ -3,13 +3,12 @@ import Sidebar from '../components/Sidebar.js';
 import '../css/CancelSessionView.css';
 import { useParams, useNavigate } from 'react-router-dom';
 
-function CancelView() {
+function CancelView({  }) {
     const { sessionId } = useParams();
     const [reason, setReason] = useState('');
     const [message, setMessage] = useState('');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    const [showErrorModal, setShowErrorModal] = useState(false); // Estado para controlar el modal de error
     const [loading, setLoading] = useState(false); // Añadir estado de carga
     const navigate = useNavigate();
 
@@ -18,10 +17,8 @@ function CancelView() {
         const url = `http://localhost:5000/cancel-session/${sessionId}`;
         setLoading(true);
 
-        if (!reason.trim()) {
+        if (!reason) {
             setMessage('El motivo de la cancelación es obligatorio');
-            setShowErrorModal(true); // Mostrar el modal de error
-            setLoading(false);
             return;
         }
 
@@ -47,23 +44,13 @@ function CancelView() {
             console.error('Error al cancelar la sesión:', error);
             setMessage('Error al cancelar la sesión');
         }
-        setLoading(false);
     };
 
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
     const closeSidebar = () => setIsSidebarOpen(false);
 
-    const openModal = () => {
-        if (!reason.trim()) { // Verifica si el campo de motivo está vacío
-            setMessage('Error: campo vacío');
-            setShowErrorModal(true); // Mostrar el modal de error
-            return;
-        }
-        setShowModal(true);
-    };
-
+    const openModal = () => setShowModal(true);
     const closeModal = () => setShowModal(false);
-    const closeErrorModal = () => setShowErrorModal(false); // Función para cerrar el modal de error
 
     return (
         <>
@@ -94,7 +81,7 @@ function CancelView() {
                     </div>
                 </div>
                 <button className="submit-button" onClick={openModal}>Cancelar Sesión</button>
-                {message && !showErrorModal && <p className="message">{message}</p>}
+                {message && <p className="message">{message}</p>}
 
                 {showModal && (
                     <div className="modal">
@@ -102,15 +89,6 @@ function CancelView() {
                             <p>¿Está seguro de que desea cancelar la sesión?</p>
                             <button onClick={handleCancelSession}>Sí, cancelar sesión</button>
                             <button onClick={closeModal}>No, volver</button>
-                        </div>
-                    </div>
-                )}
-
-                {showErrorModal && (
-                    <div className="modal">
-                        <div className="modal-content">
-                            <p>{message}</p>
-                            <button onClick={closeErrorModal}>Cerrar</button>
                         </div>
                     </div>
                 )}

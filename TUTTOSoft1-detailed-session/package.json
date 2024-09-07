@@ -41,9 +41,8 @@
     "client": "cross-env PORT=5173 react-scripts start",
     "server": "nodemon src/backend/main.js",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "cypress:open": "cypress open"
+    "test": "cypress open",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [

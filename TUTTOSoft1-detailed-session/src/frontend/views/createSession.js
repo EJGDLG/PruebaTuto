@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar.js';
 import Navbar from '../components/Navbar.js';
-
 
 import '../css/Sessions.css';
 import '../css/Sidebar.css';
@@ -17,40 +16,15 @@ function CreateSession() {
         mode: '',
         studentEmail: ''  // Añadir campo de correo electrónico del estudiante
     });
-    const [studentUsername, setStudentUsername] = useState(''); 
+    const [studentUsername, setStudentUsername] = useState(''); // Estado para el nombre de usuario del estudiante
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false); 
+    const [loading, setLoading] = useState(false); // Añadir estado de carga
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [courses, setCourses] = useState([]);
     const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         setNewSession({ ...newSession, [e.target.name]: e.target.value });
     };
-
-    useEffect(() => {
-        const fetchCourses = async () => {
-            try {
-                const response = await fetch('http://localhost:5000/courses');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                if (Array.isArray(data)) {
-                    setCourses(data);
-                    console.log(setCourses)
-                } else {
-                    throw new Error('Data is not an array');
-                }
-            } catch (error) {
-                console.error('Failed to fetch courses:', error);
-                setError('Failed to load courses');
-            }
-        };
-        fetchCourses();
-    }, []);
-    
-    
 
     const handleEmailChange = async (e) => {
         const email = e.target.value;
@@ -115,12 +89,7 @@ function CreateSession() {
             {/* <Navbar /> */}
             <h1>Crear Nueva Sesión</h1>
             <div className={`create-session-form  ${isSidebarOpen ? 'shifted' : ''}`}>
-                <select name="subject" value={newSession.subject} onChange={handleInputChange}>
-                    <option value="">Selecciona un curso</option>
-                    {courses.map(course => (
-                        <option key={course.course_code} value={course.course_code}>{course.namecourse}</option>
-                    ))}
-                </select>
+                <input name="subject" value={newSession.subject} onChange={handleInputChange} placeholder="Curso" />
                 <input type="date" name="date" value={newSession.date} onChange={handleInputChange} />
                 <input type="time" name="startHour" value={newSession.startHour} onChange={handleInputChange} />
                 <input type="time" name="endHour" value={newSession.endHour} onChange={handleInputChange} />
